@@ -4,8 +4,17 @@
   "description": "This is a web application that shows how selected sorting algorithms work",
   "main": "index.js",
   "scripts": {
+    "start": "gulp dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adrian Bonisławski",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@tsconfig/node18": "^2.0.1",
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1"
+  },
+  "dependencies": {
+    "gulp-concat": "^2.6.1"
+  }
 }
