@@ -4,6 +4,10 @@ const concat = require('gulp-concat');
 
 const tsProject = ts.createProject('tsconfig.json');
 
+gulp.task('clear', async function () {
+  const del = (await import('del')).deleteAsync
+  return del('dist/**', { force: true });
+});
 gulp.task('html', function () {
     return gulp.src('src/**/*.html')
       .pipe(gulp.dest('dist'))
@@ -27,5 +31,5 @@ gulp.task('watch', function () {
 
 gulp.task('default', gulp.series('compile-ts', 'watch'));
 
-exports.build = gulp.series('html','css','compile-ts')
-exports.dev = gulp.series('html','css','compile-ts', 'watch')
+exports.build = gulp.series('clear','html','css','compile-ts')
+exports.dev = gulp.series('clear', 'html','css','compile-ts', 'watch')
