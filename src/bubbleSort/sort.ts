@@ -14,11 +14,7 @@ const sort = {
         visual.getElement(array[i])
         await visual.promise(visual.elementFocusOn)
         await settings.pauseControl()
-        if (settings.stop) 
-          {
-            console.log('end')
-            return
-        }
+        if (settings.stop) { settings.stop = false;return}
         higlight = array[i]
         visual.getElement(array[i + 1])
         await visual.promise(visual.sideElementFocusOn)
@@ -28,30 +24,18 @@ const sort = {
             array[i + 1] = temp
             higlight = temp
             await settings.pauseControl()
-            if (settings.stop) 
-            {
-              console.log('end')
-              return
-          }
+            if (settings.stop) { settings.stop = false;return}
             await visual.promise(visual.swapElements, array[i], array[i + 1])
         }
         await settings.pauseControl()
-        if (settings.stop) 
-          {
-            console.log('end')
-            return
-        }
+        if (settings.stop) { settings.stop = false;return}
         visual.sideElementFocusOff()
       }
       n--
     }while(n > 1)
     visual.getElement(higlight)
     await settings.pauseControl()
-    if (settings.stop) 
-    {
-      console.log('end')
-      return
-    }
+    if (settings.stop) { settings.stop = false;return}
     await visual.promise(visual.elementFocusOff)
     settings.start = false
   }
