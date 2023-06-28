@@ -2,6 +2,7 @@ import sort from "./bubbleSort/sort.js";
 import visual from "./visual.js";
 const settings = {
     start: false,
+    startBtn: document.body,
     pause: true,
     stop: false,
     controls() {
@@ -11,7 +12,7 @@ const settings = {
         container.appendChild(this.setButton('step', this.step));
         container.appendChild(this.setButton('shuffle', this.shuffle));
         document.body.appendChild(container);
-        this.startPauseStyle(container.children[0]);
+        this.startBtn = container.children[0];
     },
     algorithms() {
         let container = document.createElement('div');
@@ -32,6 +33,13 @@ const settings = {
             checkPause();
         });
     },
+    ranges() {
+        let container = document.createElement('div');
+        container.classList.add('ranges');
+        container.appendChild(this.setInputRange('time', this.setTime));
+        container.appendChild(this.setInputRange('amount', this.setCount));
+        document.body.appendChild(container);
+    },
     setButton(name, fn, ...args) {
         let button = document.createElement('button');
         button.textContent = name;
@@ -40,11 +48,41 @@ const settings = {
         });
         return button;
     },
+    setCount() {
+        let range = document.getElementById('amount');
+        visual.setLength(parseInt(range.value));
+        settings.shuffle();
+        settings.updateLabel(range);
+    },
+    setInputRange(id, fn, ...args) {
+        let div = document.createElement('div');
+        let label = document.createElement('label');
+        let input = document.createElement('input');
+        input.id = id;
+        input.type = "range";
+        input.min = "10";
+        input.max = "100";
+        input.value = "10";
+        input.addEventListener('input', () => {
+            fn(...args);
+        });
+        label.setAttribute('for', id);
+        label.textContent = input.value;
+        div.classList.add(id);
+        div.appendChild(input);
+        div.appendChild(label);
+        return div;
+    },
+    setTime() {
+        let range = document.getElementById('time');
+        visual.setTime(parseInt(range.value));
+        settings.updateLabel(range);
+    },
     async shuffle() {
         if (!settings.start) {
             document.body.removeChild(visual.container);
             visual.values = [];
-            visual.init(10);
+            visual.init();
             return;
         }
         settings.stop = true;
@@ -53,9 +91,10 @@ const settings = {
             if (!settings.stop) {
                 settings.start = false;
                 settings.pause = true;
+                settings.startPauseStyle();
                 document.body.removeChild(visual.container);
                 visual.values = [];
-                visual.init(10);
+                visual.init();
             }
             else
                 setTimeout(checkStop, 30);
@@ -68,23 +107,27 @@ const settings = {
             sort.bubble(visual.values);
         }
         settings.pause = !settings.pause;
+        settings.startPauseStyle();
     },
-    startPauseStyle(elem) {
-        let button = elem;
-        button.addEventListener('click', () => {
-            button.style.cssText = '';
-            if (!settings.pause)
-                button.style.cssText = `
-                border-color: var(--border2);
-                background: var(--warning);
-                `;
-        });
+    startPauseStyle() {
+        let btn = this.startBtn;
+        btn.style.cssText = '';
+        if (!settings.pause)
+            btn.style.cssText = `
+            border-color: var(--border2);
+            background: var(--warning);
+            `;
     },
     step() {
         settings.startPause();
         setTimeout(() => {
             settings.pause = true;
+            settings.startPauseStyle();
         }, 30);
+    },
+    updateLabel(elem) {
+        let label = document.body.querySelector(`label[for='${elem.id}']`);
+        label.textContent = elem.value;
     },
 };
 export default settings;

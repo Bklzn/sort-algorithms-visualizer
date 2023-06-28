@@ -18,6 +18,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: Lucida Console;
 }
 
 .container {
@@ -67,6 +68,132 @@ body {
 }
 .controls button:hover {
   filter: brightness(1.4);
+}
+
+.ranges {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50%;
+  width: 100%;
+  height: 60%;
+}
+.ranges div {
+  position: relative;
+  width: 10%;
+  height: 100%;
+}
+.ranges div:nth-child(2) input::before {
+  content: "AMOUNT";
+}
+.ranges div label {
+  position: absolute;
+  left: 50%;
+  top: 80%;
+  transform: translateX(-40%);
+  color: var(--primary);
+  font-size: 3.5vh;
+  font-weight: 600;
+}
+.ranges div input {
+  position: absolute;
+  top: 50%;
+  left: -75%;
+  transform: rotate(-90deg);
+  width: 45vh;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.ranges div input::before {
+  content: "SPEED";
+  color: var(--primary);
+  display: inline-block;
+  position: relative;
+  transform: rotate(90deg);
+  left: 42vh;
+  font-size: 2.5vh;
+  font-weight: 600;
+}
+.ranges div input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 3vh;
+  width: 3vh;
+  aspect-ratio: 1/1;
+  border-width: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  transform: translateY(-26%);
+  box-shadow: 0px 0px 24px -3px rgb(0, 0, 0);
+}
+.ranges div input::-webkit-slider-thumb:active {
+  background: var(--warning);
+}
+.ranges div input::-moz-range-thumb {
+  height: 3vh;
+  width: 3vh;
+  aspect-ratio: 1/1;
+  border-width: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: 0px 0px 24px -3px rgb(0, 0, 0);
+}
+.ranges div input::-moz-range-thumb:active {
+  background: var(--warning);
+}
+.ranges div input::-ms-thumb {
+  height: 3vh;
+  width: 3vh;
+  aspect-ratio: 1/1;
+  border-width: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  transform: translateY(-26%);
+  box-shadow: 0px 0px 24px -3px rgb(0, 0, 0);
+}
+.ranges div input::-ms-thumb:active {
+  background: var(--warning);
+}
+.ranges div input::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 0.8vw;
+  cursor: pointer;
+  background: var(--secondary);
+  border-radius: 5vh;
+}
+.ranges div input::-moz-range-track {
+  width: 100%;
+  height: 0.8vw;
+  cursor: pointer;
+  background: var(--secondary);
+  border-radius: 5vh;
+}
+.ranges div input::-ms-track {
+  width: 100%;
+  height: 0.8vw;
+  cursor: pointer;
+  background: var(--secondary);
+  border-radius: 5vh;
+}
+.ranges div input::-ms-fill-lower {
+  width: 100%;
+  height: 0.8vw;
+  cursor: pointer;
+  background: var(--warning);
+  border-radius: 5vh;
+}
+.ranges div input::-ms-fill-upper {
+  width: 100%;
+  height: 0.8vw;
+  cursor: pointer;
+  background: var(--warning);
+  border-radius: 5vh;
+}
+.ranges div input:focus {
+  outline: none;
 }
 
 .algorithms {

@@ -2,33 +2,36 @@ import settings from "./settings.js"
 
 const visual: {
     values: number[],
+    length: number,
     container: HTMLElement,
     element: HTMLElement,
     time: number
 
-    init(length: number): void
+    init(): void
     elementFocusOn(): void
     elementFocusOff(): void
     generateValues(length: number): void
     getElement(value: number): void
     promise(func:(...args:any[]) => void, ...args: any[]): Promise<void>
+    setLength(value: number): void
     setValueElement(elem: HTMLElement, values: number[], i: number): void
     setStyleElement(elem: HTMLElement, values: number[], i: number): void
     setElements(values: number[]): void
-    setTime(length: number): void
+    setTime(factor?: number): void
     sideElementFocusOn(): void
     sideElementFocusOff(): void
     swapElements(value1: number, value2: number): void
 
 } = {
     values: [],
+    length: 10,
     container: document.body,
     element: document.body,
     time: 0,
 
-    init(length) {
-        this.generateValues(length)
-        this.setTime(this.values.length)
+    init() {
+        this.generateValues(this.length)
+        this.setTime()
         this.setElements(this.values)
     },
     elementFocusOn(){
@@ -57,6 +60,9 @@ const visual: {
             },this.time)
         })
     },
+    setLength(value){
+        this.length = value
+    },
     setElements(values){
         let container = document.createElement('div')
         container.classList.add(`container`)
@@ -75,9 +81,9 @@ const visual: {
         let styles = {
             width: containerW / length / 10 > 1?containerW / length - 4*(containerW / length / 10):containerW / length - 4,
             height: containerH / length * values[i] - 2 * Math.max(containerW / length / 10, 1),
-            left: containerW / length * i,
+            left: containerW / length * i + Math.max(containerW / length / 10, 1),
             border: Math.max(containerW / length / 10, 1),
-            radius: Math.max(containerW / length / 10, 1) * 2.5
+            radius: Math.max(containerW / length / 10, 1) * 2.5,
         }
         div.style.cssText = `
         width: ${styles.width}px;
@@ -93,8 +99,9 @@ const visual: {
         div.classList.add('element', `value${values[i]}`)
         elem.appendChild(div)
     },
-    setTime(length){
-        this.time = 300 - (length)
+    async setTime(factor = 10){
+        this.time = 500 * (1 - (factor/100))
+        console.log(this.time)
     },
     sideElementFocusOn(){
         visual.element.classList.add('side')
