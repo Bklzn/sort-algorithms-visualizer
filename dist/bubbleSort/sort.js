@@ -49,6 +49,8 @@ const sort = {
         }
         await visual.promise(visual.elementFocusOff);
         settings.start = false;
+        settings.pause = true;
+        settings.startPauseStyle();
     }
 };
 export default sort;

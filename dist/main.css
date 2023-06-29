@@ -15,16 +15,20 @@ body {
   height: 100%;
   margin: 0;
   background: var(--background);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Lucida Console;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .container {
   position: relative;
   width: 80%;
   height: 60%;
+  margin: auto;
+}
+@media (max-width: 950px) {
+  .container {
+    height: 20%;
+    width: 95%;
+  }
 }
 .container .element {
   position: absolute;
@@ -44,9 +48,6 @@ body {
 }
 
 .controls {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 20%;
   display: flex;
@@ -54,17 +55,18 @@ body {
   align-items: center;
 }
 .controls button {
-  width: 10%;
+  width: max(10%, 140px);
   height: 30%;
   font-size: 2vh;
-  background: var(--primary);
-  border: 1vh solid var(--secondary);
+  color: var(--secondary);
+  background: var(--background);
+  border: 0.3rem solid var(--secondary);
   border-radius: 2vh;
   filter: brightness(1.2);
 }
 .controls button:active {
   border-color: var(--border2);
-  background: var(--warning);
+  color: var(--warning);
 }
 .controls button:hover {
   filter: brightness(1.4);
@@ -72,60 +74,114 @@ body {
 
 .ranges {
   position: absolute;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 50%;
   width: 100%;
   height: 60%;
+}
+@media (max-width: 950px) {
+  .ranges {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
 }
 .ranges div {
   position: relative;
   width: 10%;
   height: 100%;
+  display: inline-block;
+  left: 0%;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 950px) {
+  .ranges div {
+    display: block;
+    height: 150px;
+    width: 100%;
+  }
+}
+.ranges div:nth-child(2) {
+  left: 80%;
+}
+@media (max-width: 950px) {
+  .ranges div:nth-child(2) {
+    left: 0;
+  }
 }
 .ranges div:nth-child(2) input::before {
   content: "AMOUNT";
+  transform: rotate(90deg) translateY(50%);
+}
+@media (max-width: 950px) {
+  .ranges div:nth-child(2) input::before {
+    transform: rotate(0);
+  }
 }
 .ranges div label {
   position: absolute;
   left: 50%;
-  top: 80%;
-  transform: translateX(-40%);
+  top: 85%;
+  transform: translateX(-50%);
   color: var(--primary);
-  font-size: 3.5vh;
+  font-size: 2vw;
   font-weight: 600;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+@media (max-width: 950px) {
+  .ranges div label {
+    top: 50%;
+    font-size: 2vh;
+  }
 }
 .ranges div input {
   position: absolute;
   top: 50%;
-  left: -75%;
-  transform: rotate(-90deg);
-  width: 45vh;
+  left: 50%;
+  margin: 0.1vw 0;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  width: 35vh;
   -webkit-appearance: none;
   background: transparent;
+}
+@media (max-width: 950px) {
+  .ranges div input {
+    position: relative;
+    top: 20%;
+    transform: translate(-50%, -20%) rotate(0);
+    height: auto;
+    width: 90%;
+  }
 }
 .ranges div input::before {
   content: "SPEED";
   color: var(--primary);
   display: inline-block;
-  position: relative;
+  position: absolute;
   transform: rotate(90deg);
-  left: 42vh;
-  font-size: 2.5vh;
+  left: 100%;
+  top: -50%;
+  font-size: 1.6vw;
   font-weight: 600;
+}
+@media (max-width: 950px) {
+  .ranges div input::before {
+    left: 0;
+    top: -4vh;
+    transform: rotate(0);
+    font-size: 2vh;
+  }
 }
 .ranges div input::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 3vh;
   width: 3vh;
-  aspect-ratio: 1/1;
   border-width: 0;
   border-radius: 50%;
   background: var(--primary);
+  margin-top: calc(0.4vw - 1.5vh);
   cursor: pointer;
-  transform: translateY(-26%);
-  box-shadow: 0px 0px 24px -3px rgb(0, 0, 0);
+  box-shadow: 0px 0px 2vw -0.3vw rgb(0, 0, 0);
 }
 .ranges div input::-webkit-slider-thumb:active {
   background: var(--warning);
@@ -133,7 +189,6 @@ body {
 .ranges div input::-moz-range-thumb {
   height: 3vh;
   width: 3vh;
-  aspect-ratio: 1/1;
   border-width: 0;
   border-radius: 50%;
   background: var(--primary);
@@ -146,12 +201,11 @@ body {
 .ranges div input::-ms-thumb {
   height: 3vh;
   width: 3vh;
-  aspect-ratio: 1/1;
   border-width: 0;
   border-radius: 50%;
   background: var(--primary);
   cursor: pointer;
-  transform: translateY(-26%);
+  margin-top: calc(0.4vw - 1.5vh);
   box-shadow: 0px 0px 24px -3px rgb(0, 0, 0);
 }
 .ranges div input::-ms-thumb:active {

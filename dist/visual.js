@@ -4,6 +4,7 @@ const visual = {
     container: document.body,
     element: document.body,
     time: 0,
+    factor: 10,
     init() {
         this.generateValues(this.length);
         this.setTime();
@@ -74,8 +75,8 @@ const visual = {
         div.classList.add('element', `value${values[i]}`);
         elem.appendChild(div);
     },
-    async setTime(factor = 10) {
-        this.time = 500 * (1 - (factor / 100));
+    async setTime() {
+        this.time = 500 * (1 - (this.factor / 100));
         console.log(this.time);
     },
     sideElementFocusOn() {

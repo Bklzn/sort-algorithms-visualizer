@@ -6,6 +6,7 @@ const visual: {
     container: HTMLElement,
     element: HTMLElement,
     time: number
+    factor: number
 
     init(): void
     elementFocusOn(): void
@@ -17,7 +18,7 @@ const visual: {
     setValueElement(elem: HTMLElement, values: number[], i: number): void
     setStyleElement(elem: HTMLElement, values: number[], i: number): void
     setElements(values: number[]): void
-    setTime(factor?: number): void
+    setTime(): void
     sideElementFocusOn(): void
     sideElementFocusOff(): void
     swapElements(value1: number, value2: number): void
@@ -28,6 +29,7 @@ const visual: {
     container: document.body,
     element: document.body,
     time: 0,
+    factor: 10,
 
     init() {
         this.generateValues(this.length)
@@ -99,8 +101,8 @@ const visual: {
         div.classList.add('element', `value${values[i]}`)
         elem.appendChild(div)
     },
-    async setTime(factor = 10){
-        this.time = 500 * (1 - (factor/100))
+    async setTime(){
+        this.time = 500 * (1 - (this.factor/100))
         console.log(this.time)
     },
     sideElementFocusOn(){

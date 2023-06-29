@@ -29,7 +29,7 @@ const settings: {
     controls(){
         let container = document.createElement('div')
         container.classList.add('controls')
-        container.appendChild(this.setButton('start/pause', this.startPause))
+        container.appendChild(this.setButton('start / pause', this.startPause))
         container.appendChild(this.setButton('step', this.step))
         container.appendChild(this.setButton('shuffle', this.shuffle))
         document.body.appendChild(container)
@@ -46,7 +46,7 @@ const settings: {
         return new Promise<void>((resolve) => {
             const checkPause = () => {
                 if (settings.pause) {
-                setTimeout(checkPause, 20);
+                setTimeout(checkPause, 2);
                 } else {
                 resolve();
                 }
@@ -70,11 +70,11 @@ const settings: {
         })
         return button
     },
-    setCount(){
+    async setCount(){
         let range = document.getElementById('amount') as HTMLInputElement
         visual.setLength(parseInt(range.value))
-        settings.shuffle()
         settings.updateLabel(range)
+        settings.shuffle()
     },
     setInputRange(id ,fn, ...args){
         let div = document.createElement('div')
@@ -97,8 +97,12 @@ const settings: {
     },
     setTime(){
         let range = document.getElementById('time') as HTMLInputElement
-        visual.setTime(parseInt(range.value))
+        visual.factor = parseInt(range.value)
+        visual.setTime()
         settings.updateLabel(range)
+        for(let i = 0; i< visual.length; i++) {
+            visual.setStyleElement(visual.container, visual.values, i)
+        }
     },
     async shuffle(){
         if(!settings.start){
@@ -118,7 +122,7 @@ const settings: {
                 visual.values = []
                 visual.init()
             } else
-            setTimeout(checkStop, 30);
+            setTimeout(checkStop, 3);
         }
         checkStop()
     },
@@ -135,7 +139,7 @@ const settings: {
         btn.style.cssText = ''
         if(!settings.pause) btn.style.cssText = `
             border-color: var(--border2);
-            background: var(--warning);
+            color: var(--warning);
             `
     },
     step(){
@@ -143,7 +147,7 @@ const settings: {
         setTimeout(() => {
             settings.pause = true
             settings.startPauseStyle()
-        },30)
+        },3)
     },
     updateLabel(elem){
         let label = document.body.querySelector(`label[for='${elem.id}']`) as HTMLLabelElement

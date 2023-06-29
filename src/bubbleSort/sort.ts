@@ -38,6 +38,8 @@ const sort = {
     if (settings.stop) { settings.stop = false;return}
     await visual.promise(visual.elementFocusOff)
     settings.start = false
+    settings.pause = true
+    settings.startPauseStyle()
   }
 }
 export default sort
