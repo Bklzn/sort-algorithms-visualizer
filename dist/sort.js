@@ -1,5 +1,5 @@
-import visual from "../visual.js";
-import settings from "../settings.js";
+import visual from "./visual.js";
+import settings from "./settings.js";
 const sort = {
     async bubble(array) {
         let n = array.length;
