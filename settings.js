@@ -1,4 +1,4 @@
-import sort from "./bubbleSort/sort.js";
+import sort from "./sort.js";
 import visual from "./visual.js";
 const settings = {
     start: false,
