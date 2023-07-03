@@ -53,9 +53,16 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  gap: 15px;
+}
+@media (max-width: 950px) {
+  .controls {
+    flex-direction: column;
+    padding-top: 15px;
+  }
 }
 .controls button {
-  width: max(10%, 140px);
+  width: 20%;
   height: 30%;
   font-size: 2vh;
   color: var(--secondary);
@@ -63,6 +70,11 @@ body {
   border: 0.3rem solid var(--secondary);
   border-radius: 2vh;
   filter: brightness(1.2);
+}
+@media (max-width: 950px) {
+  .controls button {
+    width: calc(100% - 15px);
+  }
 }
 .controls button:active {
   border-color: var(--border2);
@@ -97,7 +109,7 @@ body {
 @media (max-width: 950px) {
   .ranges div {
     display: block;
-    height: 150px;
+    height: 120px;
     width: 100%;
   }
 }
@@ -147,7 +159,7 @@ body {
 @media (max-width: 950px) {
   .ranges div input {
     position: relative;
-    top: 20%;
+    top: 30%;
     transform: translate(-50%, -20%) rotate(0);
     height: auto;
     width: 90%;
@@ -252,12 +264,45 @@ body {
 
 .algorithms {
   position: absolute;
-  top: 0;
+  top: 80%;
   left: 0;
   width: 100%;
   height: 20%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  flex-wrap: wrap;
   bottom: 0;
+}
+.algorithms div {
+  width: 10%;
+  height: 30%;
+}
+.algorithms div label {
+  display: inline-block;
+  text-align: center;
+  width: calc(100% - 0.6rem);
+  padding: 10% 0;
+  font-size: 2vh;
+  color: var(--secondary);
+  background: var(--background);
+  border: 0.3rem solid var(--secondary);
+  border-radius: 2vh;
+  filter: brightness(1.2);
+  user-select: none;
+  cursor: pointer;
+}
+.algorithms div label:active {
+  border-color: var(--border2);
+  color: var(--warning);
+}
+.algorithms div label:hover {
+  filter: brightness(1.4);
+}
+.algorithms div input {
+  display: none;
+}
+.algorithms div input:checked + label {
+  border-color: var(--border2);
+  color: var(--warning);
 }

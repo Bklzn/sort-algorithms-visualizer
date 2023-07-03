@@ -1,7 +1,8 @@
-import sort from "./bubbleSort/sort.js"
+import sort from "./sort.js"
 import visual from "./visual.js"
 
 const settings: {
+    sort: string
     start: boolean
     startBtn: Element
     pause: boolean
@@ -12,15 +13,18 @@ const settings: {
     pauseControl(): Promise<void>
     ranges(): void
     setButton(name: string, fn:(...args:any) => void, ...args:any): Element
+    setSortBtn(name: string, fn:(...args:any) => void, ...args:any): Element
     setInputRange(id: string, fn:(...args:any) => void, ...args:any): Element
     setCount(): void
     setTime(): void
     shuffle(): void
+    startAlgorithm(): void
     startPause(): void
     startPauseStyle(): void
     step(): void
     updateLabel(elem: HTMLInputElement): void
 } = {
+    sort: 'quick',
     start: false,
     startBtn: document.body,
     pause: true,
@@ -36,17 +40,18 @@ const settings: {
         this.startBtn = container.children[0]
 
     },
-    algorithms(){
-        let container = document.createElement('div')
-        container.classList.add('algorithms')
-        container.appendChild(this.setButton('bubble', sort.bubble, visual.values))
-        document.body.appendChild(container)
+    algorithms() {
+        let container = document.createElement('div');
+        container.classList.add('algorithms');
+        container.appendChild(this.setSortBtn('bubble', console.log, 1));
+        container.appendChild(this.setSortBtn('quick', console.log, 2));
+        document.body.appendChild(container);
     },
     pauseControl(){
         return new Promise<void>((resolve) => {
             const checkPause = () => {
                 if (settings.pause) {
-                setTimeout(checkPause, 2);
+                setTimeout(checkPause, 5);
                 } else {
                 resolve();
                 }
@@ -69,6 +74,22 @@ const settings: {
             fn(...args)
         })
         return button
+    },
+    setSortBtn(name, fn, ...args) {
+        let div = document.createElement('div')
+        let input = document.createElement('input')
+        let label = document.createElement('label')
+        input.id = name
+        input.type = 'radio'
+        input.name = 'sort'
+        label.setAttribute('for', name)
+        label.textContent = name
+        label.addEventListener('click', () => {
+            fn(...args)
+        })
+        div.classList.add(name)
+        div.append(input, label)
+        return div
     },
     async setCount(){
         let range = document.getElementById('amount') as HTMLInputElement
@@ -122,14 +143,28 @@ const settings: {
                 visual.values = []
                 visual.init()
             } else
-            setTimeout(checkStop, 3);
+            setTimeout(checkStop, 10);
         }
         checkStop()
     },
+    async startAlgorithm(){
+        switch(this.sort){
+            case 'bubble':
+                await sort.bubble(visual.values)
+                break;
+            case 'quick':
+                await sort.quicksort(visual.values, 0, visual.length - 1)
+                break;
+        }
+        settings.start = false
+        settings.pause = true
+        settings.startPauseStyle()
+    },
     startPause(){
+
         if(!settings.start){
             settings.start = true
-            sort.bubble(visual.values)
+            settings.startAlgorithm()
         }
         settings.pause = !settings.pause
         settings.startPauseStyle()
@@ -147,7 +182,7 @@ const settings: {
         setTimeout(() => {
             settings.pause = true
             settings.startPauseStyle()
-        },3)
+        },10)
     },
     updateLabel(elem){
         let label = document.body.querySelector(`label[for='${elem.id}']`) as HTMLLabelElement
