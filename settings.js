@@ -1,6 +1,7 @@
 import sort from "./sort.js";
 import visual from "./visual.js";
 const settings = {
+    sort: 'quick',
     start: false,
     startBtn: document.body,
     pause: true,
@@ -17,14 +18,20 @@ const settings = {
     algorithms() {
         let container = document.createElement('div');
         container.classList.add('algorithms');
-        container.appendChild(this.setButton('bubble', sort.bubble, visual.values));
+        container.appendChild(this.setSortBtn('bubble', this.setSort));
+        container.appendChild(this.setSortBtn('quick', this.setSort));
         document.body.appendChild(container);
+        container.querySelectorAll('label:nth-child(2)')[0].dispatchEvent(new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            view: window
+        }));
     },
     pauseControl() {
         return new Promise((resolve) => {
             const checkPause = () => {
                 if (settings.pause) {
-                    setTimeout(checkPause, 2);
+                    setTimeout(checkPause, 5);
                 }
                 else {
                     resolve();
@@ -47,6 +54,43 @@ const settings = {
             fn(...args);
         });
         return button;
+    },
+    setSort(sort) {
+        settings.sort = sort;
+        let checkStop = () => {
+            if (!settings.stop) {
+                settings.start = false;
+                settings.pause = true;
+                settings.startPauseStyle();
+                let bars = document.body.querySelectorAll('.container .element');
+                bars.forEach((el) => {
+                    el.classList.remove('focus', 'side');
+                });
+            }
+            else
+                setTimeout(checkStop, 10);
+        };
+        if (settings.start) {
+            settings.stop = true;
+            settings.pause = false;
+            checkStop();
+        }
+    },
+    setSortBtn(name, fn) {
+        let div = document.createElement('div');
+        let input = document.createElement('input');
+        let label = document.createElement('label');
+        input.id = name;
+        input.type = 'radio';
+        input.name = 'sort';
+        label.setAttribute('for', name);
+        label.textContent = name;
+        label.addEventListener('click', () => {
+            fn(name);
+        });
+        div.classList.add(name);
+        div.append(input, label);
+        return div;
     },
     async setCount() {
         let range = document.getElementById('amount');
@@ -101,14 +145,29 @@ const settings = {
                 visual.init();
             }
             else
-                setTimeout(checkStop, 3);
+                setTimeout(checkStop, 10);
         };
         checkStop();
+    },
+    async startAlgorithm() {
+        console.log(this.sort);
+        switch (this.sort) {
+            case 'bubble':
+                await sort.bubble(visual.values);
+                break;
+            case 'quick':
+                await sort.quicksort(visual.values, 0, visual.length - 1);
+                break;
+        }
+        settings.stop = false;
+        settings.start = false;
+        settings.pause = true;
+        settings.startPauseStyle();
     },
     startPause() {
         if (!settings.start) {
             settings.start = true;
-            sort.bubble(visual.values);
+            settings.startAlgorithm();
         }
         settings.pause = !settings.pause;
         settings.startPauseStyle();
@@ -127,7 +186,7 @@ const settings = {
         setTimeout(() => {
             settings.pause = true;
             settings.startPauseStyle();
-        }, 3);
+        }, 10);
     },
     updateLabel(elem) {
         let label = document.body.querySelector(`label[for='${elem.id}']`);

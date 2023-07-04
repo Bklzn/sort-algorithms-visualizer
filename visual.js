@@ -58,7 +58,7 @@ const visual = {
             width: containerW / length / 10 > 1 ? containerW / length - 4 * (containerW / length / 10) : containerW / length - 4,
             height: containerH / length * values[i] - 2 * Math.max(containerW / length / 10, 1),
             left: containerW / length * i + Math.max(containerW / length / 10, 1),
-            border: Math.max(containerW / length / 10, 1),
+            border: containerW / length / 10 < 1.5 ? 0 : containerW / length / 10,
             radius: Math.max(containerW / length / 10, 1) * 2.5,
         };
         div.style.cssText = `
@@ -77,7 +77,6 @@ const visual = {
     },
     async setTime() {
         this.time = 500 * (1 - (this.factor / 100));
-        console.log(this.time);
     },
     sideElementFocusOn() {
         visual.element.classList.add('side');
