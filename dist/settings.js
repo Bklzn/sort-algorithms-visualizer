@@ -18,9 +18,14 @@ const settings = {
     algorithms() {
         let container = document.createElement('div');
         container.classList.add('algorithms');
-        container.appendChild(this.setSortBtn('bubble', console.log, 1));
-        container.appendChild(this.setSortBtn('quick', console.log, 2));
+        container.appendChild(this.setSortBtn('bubble', this.setSort));
+        container.appendChild(this.setSortBtn('quick', this.setSort));
         document.body.appendChild(container);
+        container.querySelectorAll('label:nth-child(2)')[0].dispatchEvent(new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            view: window
+        }));
     },
     pauseControl() {
         return new Promise((resolve) => {
@@ -50,7 +55,28 @@ const settings = {
         });
         return button;
     },
-    setSortBtn(name, fn, ...args) {
+    setSort(sort) {
+        settings.sort = sort;
+        let checkStop = () => {
+            if (!settings.stop) {
+                settings.start = false;
+                settings.pause = true;
+                settings.startPauseStyle();
+                let bars = document.body.querySelectorAll('.container .element');
+                bars.forEach((el) => {
+                    el.classList.remove('focus', 'side');
+                });
+            }
+            else
+                setTimeout(checkStop, 10);
+        };
+        if (settings.start) {
+            settings.stop = true;
+            settings.pause = false;
+            checkStop();
+        }
+    },
+    setSortBtn(name, fn) {
         let div = document.createElement('div');
         let input = document.createElement('input');
         let label = document.createElement('label');
@@ -60,7 +86,7 @@ const settings = {
         label.setAttribute('for', name);
         label.textContent = name;
         label.addEventListener('click', () => {
-            fn(...args);
+            fn(name);
         });
         div.classList.add(name);
         div.append(input, label);
@@ -124,6 +150,7 @@ const settings = {
         checkStop();
     },
     async startAlgorithm() {
+        console.log(this.sort);
         switch (this.sort) {
             case 'bubble':
                 await sort.bubble(visual.values);
@@ -132,6 +159,7 @@ const settings = {
                 await sort.quicksort(visual.values, 0, visual.length - 1);
                 break;
         }
+        settings.stop = false;
         settings.start = false;
         settings.pause = true;
         settings.startPauseStyle();

@@ -14,7 +14,7 @@ const sort = {
                 await visual.promise(visual.elementFocusOn);
                 await settings.pauseControl();
                 if (settings.stop) {
-                    settings.stop = false;
+                    console.log('stop');
                     return;
                 }
                 higlight = array[i];
@@ -27,14 +27,14 @@ const sort = {
                     higlight = temp;
                     await settings.pauseControl();
                     if (settings.stop) {
-                        settings.stop = false;
+                        console.log('stop');
                         return;
                     }
                     await visual.promise(visual.swapElements, array[i], array[i + 1]);
                 }
                 await settings.pauseControl();
                 if (settings.stop) {
-                    settings.stop = false;
+                    console.log('stop');
                     return;
                 }
                 visual.sideElementFocusOff();
@@ -44,7 +44,7 @@ const sort = {
         visual.getElement(higlight);
         await settings.pauseControl();
         if (settings.stop) {
-            settings.stop = false;
+            console.log('stop');
             return;
         }
         await visual.promise(visual.elementFocusOff);
@@ -55,14 +55,14 @@ const sort = {
             await visual.promise(visual.sideElementFocusOn);
             await settings.pauseControl();
             if (settings.stop) {
-                settings.stop = false;
+                console.log('stop');
                 return;
             }
             visual.getElement(arr[b]);
             await visual.promise(visual.sideElementFocusOn);
             await settings.pauseControl();
             if (settings.stop) {
-                settings.stop = false;
+                console.log('stop');
                 return;
             }
             let temp = arr[a];
@@ -70,7 +70,7 @@ const sort = {
             arr[b] = temp;
             await settings.pauseControl();
             if (settings.stop) {
-                settings.stop = false;
+                console.log('stop');
                 return;
             }
             await visual.promise(visual.swapElements, array[a], array[b]);
@@ -78,14 +78,14 @@ const sort = {
             await visual.promise(visual.sideElementFocusOff);
             await settings.pauseControl();
             if (settings.stop) {
-                settings.stop = false;
+                console.log('stop');
                 return;
             }
             visual.getElement(arr[b]);
             await visual.promise(visual.sideElementFocusOff);
             await settings.pauseControl();
             if (settings.stop) {
-                settings.stop = false;
+                console.log('stop');
                 return;
             }
         };
@@ -96,7 +96,7 @@ const sort = {
             await visual.promise(visual.elementFocusOn);
             await settings.pauseControl();
             if (settings.stop) {
-                settings.stop = false;
+                console.log('stop');
                 return;
             }
             for (let j = first; j <= last - 1; j++) {
@@ -104,7 +104,7 @@ const sort = {
                 await visual.promise(visual.sideElementFocusOn);
                 await settings.pauseControl();
                 if (settings.stop) {
-                    settings.stop = false;
+                    console.log('stop');
                     return;
                 }
                 if (array[j] <= pivot) {
@@ -116,20 +116,20 @@ const sort = {
                     await visual.promise(visual.sideElementFocusOn);
                     await settings.pauseControl();
                     if (settings.stop) {
-                        settings.stop = false;
+                        console.log('stop');
                         return;
                     }
                     await visual.promise(visual.sideElementFocusOff);
                     await settings.pauseControl();
                     if (settings.stop) {
-                        settings.stop = false;
+                        console.log('stop');
                         return;
                     }
                     visual.getElement(array[j]);
                     await visual.promise(visual.sideElementFocusOff);
                     await settings.pauseControl();
                     if (settings.stop) {
-                        settings.stop = false;
+                        console.log('stop');
                         return;
                     }
                 }
@@ -140,7 +140,7 @@ const sort = {
             await visual.promise(visual.elementFocusOff);
             await settings.pauseControl();
             if (settings.stop) {
-                settings.stop = false;
+                console.log('stop');
                 return;
             }
             return i;
@@ -149,7 +149,15 @@ const sort = {
             return;
         let pivot = await partition(array, first, last) || first;
         await this.quicksort(array, first, pivot - 1);
+        if (settings.stop) {
+            console.log('stop');
+            return;
+        }
         await this.quicksort(array, pivot + 1, last);
+        if (settings.stop) {
+            console.log('stop');
+            return;
+        }
     }
 };
 export default sort;
