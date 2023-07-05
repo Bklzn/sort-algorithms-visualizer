@@ -19,6 +19,7 @@ const settings = {
         let container = document.createElement('div');
         container.classList.add('algorithms');
         container.appendChild(this.setSortBtn('bubble', this.setSort));
+        container.appendChild(this.setSortBtn('insert', this.setSort));
         container.appendChild(this.setSortBtn('quick', this.setSort));
         document.body.appendChild(container);
         container.querySelectorAll('label:nth-child(2)')[0].dispatchEvent(new MouseEvent('click', {
@@ -154,6 +155,9 @@ const settings = {
         switch (this.sort) {
             case 'bubble':
                 await sort.bubble(visual.values);
+                break;
+            case 'insert':
+                await sort.insert(visual.values, visual.length);
                 break;
             case 'quick':
                 await sort.quicksort(visual.values, 0, visual.length - 1);

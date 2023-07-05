@@ -9,6 +9,3 @@ visual.init();
 //         visual.setStyleElement(visual.container, visual.values, i)
 //     }
 // })
-// console.log(visual.values)
-// sort.quicksort(visual.values, 0, 9)
-// console.log(visual.values)
