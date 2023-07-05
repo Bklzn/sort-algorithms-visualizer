@@ -112,7 +112,7 @@ const settings: {
         input.name = 'sort'
         label.setAttribute('for', name)
         label.textContent = name
-        label.addEventListener('click', () => {
+        input.addEventListener('change', () => {
             fn(name)
         })
         div.classList.add(name)
