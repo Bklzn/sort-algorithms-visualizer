@@ -21,6 +21,8 @@ const settings = {
         container.appendChild(this.setSortBtn('bubble', this.setSort));
         container.appendChild(this.setSortBtn('insert', this.setSort));
         container.appendChild(this.setSortBtn('quick', this.setSort));
+        //soon
+        container.innerHTML += '<p style="color: white; font-weight: 700;">More algorithms soon</p>';
         document.body.appendChild(container);
         container.querySelectorAll('label:nth-child(2)')[0].dispatchEvent(new MouseEvent('click', {
             bubbles: true,
