@@ -47,9 +47,7 @@ const settings: {
         container.appendChild(this.setSortBtn('bubble', this.setSort));
         container.appendChild(this.setSortBtn('insert', this.setSort));
         container.appendChild(this.setSortBtn('quick', this.setSort));
-
-        //soon
-        container.innerHTML += '<p style="color: white; font-weight: 700;">More algorithms soon</p>'
+        container.appendChild(this.setSortBtn('merge', this.setSort));
 
         document.body.appendChild(container);
         container.querySelectorAll('label:nth-child(2)')[0].dispatchEvent(
@@ -153,9 +151,7 @@ const settings: {
         visual.factor = parseInt(range.value)
         visual.setTime()
         settings.updateLabel(range)
-        for(let i = 0; i< visual.length; i++) {
-            visual.setStyleElement(visual.container, visual.values, i)
-        }
+        visual.updateTime()
     },
     async shuffle(){
         if(!settings.start){
@@ -190,6 +186,9 @@ const settings: {
                 break;
             case 'quick':
                 await sort.quicksort(visual.values, 0, visual.length - 1)
+                break;
+            case 'merge':
+                await sort.mergeSort(visual.values, 0, visual.length - 1)
                 break;
         }
         settings.stop = false

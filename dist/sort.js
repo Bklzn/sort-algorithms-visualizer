@@ -74,6 +74,131 @@ const sort = {
                 return;
         }
     },
+    async mergeSort(array, begin, end) {
+        let merge = async (array, left, mid, right) => {
+            let subArrayOne = mid - left + 1;
+            let subArrayTwo = right - mid;
+            let leftArray = new Array(subArrayOne);
+            let rightArray = new Array(subArrayTwo);
+            for (let i = 0; i < subArrayOne; i++) {
+                leftArray[i] = array[left + i];
+                visual.getElement(leftArray[i]);
+                visual.promise(visual.sideElementFocusOn);
+            }
+            for (let i = 0; i < subArrayTwo; i++) {
+                rightArray[i] = array[mid + 1 + i];
+                visual.getElement(rightArray[i]);
+                visual.promise(visual.sideElementFocusOn);
+            }
+            let indexOne = 0, indexTwo = 0, indexMerged = left;
+            let higlight;
+            while (indexOne < subArrayOne && indexTwo < subArrayTwo) {
+                visual.getElement(array[indexMerged]);
+                higlight = array[indexMerged];
+                await visual.promise(visual.elementFocusOn);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                if (leftArray[indexOne] <= rightArray[indexTwo]) {
+                    visual.getElement(leftArray[indexOne]);
+                    await visual.promise(visual.elementFocusOn);
+                    await settings.pauseControl();
+                    if (settings.stop)
+                        return;
+                    await visual.promise(visual.elementFocusOff);
+                    await settings.pauseControl();
+                    if (settings.stop)
+                        return;
+                    array[indexMerged] = leftArray[indexOne];
+                    indexOne++;
+                }
+                else {
+                    visual.getElement(rightArray[indexTwo]);
+                    await visual.promise(visual.elementFocusOn);
+                    await settings.pauseControl();
+                    if (settings.stop)
+                        return;
+                    await visual.promise(visual.elementFocusOff);
+                    await settings.pauseControl();
+                    if (settings.stop)
+                        return;
+                    array[indexMerged] = rightArray[indexTwo];
+                    indexTwo++;
+                }
+                visual.getElement(higlight);
+                await visual.promise(visual.elementFocusOff);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                indexMerged++;
+            }
+            while (indexOne < subArrayOne) {
+                visual.getElement(array[indexMerged]);
+                await visual.promise(visual.elementFocusOn);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                visual.getElement(leftArray[indexOne]);
+                await visual.promise(visual.elementFocusOn);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                await visual.promise(visual.elementFocusOff);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                visual.getElement(array[indexMerged]);
+                await visual.promise(visual.elementFocusOff);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                array[indexMerged] = leftArray[indexOne];
+                indexOne++;
+                indexMerged++;
+            }
+            while (indexTwo < subArrayTwo) {
+                visual.getElement(array[indexMerged]);
+                await visual.promise(visual.elementFocusOn);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                visual.getElement(rightArray[indexTwo]);
+                await visual.promise(visual.elementFocusOn);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                await visual.promise(visual.elementFocusOff);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                visual.getElement(array[indexMerged]);
+                await visual.promise(visual.elementFocusOff);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                array[indexMerged] = rightArray[indexTwo];
+                indexTwo++;
+                indexMerged++;
+            }
+            await visual.promise(visual.updateStyles);
+            for (let i = array.length - 1; i >= 0; i--) {
+                visual.getElement(array[i]);
+                visual.promise(visual.sideElementFocusOff);
+            }
+        };
+        if (begin >= end || settings.stop)
+            return;
+        let mid = Math.floor(begin + (end - begin) / 2);
+        await this.mergeSort(array, begin, mid);
+        if (settings.stop)
+            return;
+        await this.mergeSort(array, mid + 1, end);
+        if (settings.stop)
+            return;
+        await merge(array, begin, mid, end);
+        if (settings.stop)
+            return;
+    },
     async quicksort(array, first, last) {
         let swap = async (arr, a, b) => {
             visual.getElement(arr[a]);
@@ -157,6 +282,6 @@ const sort = {
         await this.quicksort(array, pivot + 1, last);
         if (settings.stop)
             return;
-    }
+    },
 };
 export default sort;
