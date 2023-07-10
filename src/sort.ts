@@ -18,25 +18,92 @@ const sort = {
         higlight = array[i]
         visual.getElement(array[i + 1])
         await visual.promise(visual.sideElementFocusOn)
+        await settings.pauseControl()
+        if (settings.stop) return
         if (array[i] > array[i + 1]){
             let temp = array[i]
             array[i] = array[i + 1]
             array[i + 1] = temp
             higlight = temp
+            await visual.promise(visual.swapElements, array[i], array[i + 1])
             await settings.pauseControl()
             if (settings.stop) return
-            await visual.promise(visual.swapElements, array[i], array[i + 1])
         }
+        visual.sideElementFocusOff()
         await settings.pauseControl()
         if (settings.stop) return
-        visual.sideElementFocusOff()
       }
       n--
     }while(n > 1)
     visual.getElement(higlight)
+    await visual.promise(visual.elementFocusOff)
     await settings.pauseControl()
     if (settings.stop) return
+  },
+  async cocktail(array: number[]){
+    let higlight: number = array[0]
+    let idx1 = 0
+    let idx2 = array.length - 1
+    while(idx1 <= idx2){
+      let newidx1 = idx2
+      let newidx2 = idx1
+      for(let i = idx1; i < idx2; i++){
+        if(array[i] != higlight) {
+          visual.getElement(higlight)
+          visual.elementFocusOff()
+        }
+        visual.getElement(array[i])
+        await visual.promise(visual.elementFocusOn)
+        await settings.pauseControl()
+        if (settings.stop) return
+        higlight = array[i]
+        visual.getElement(array[i + 1])
+        await visual.promise(visual.sideElementFocusOn)
+        await settings.pauseControl()
+        if (settings.stop) return
+        if(array[i] > array[i + 1]){
+          [array[i],array[i + 1]] = [array[i + 1],array[i]]
+          newidx2 = i
+          await visual.promise(visual.swapElements, array[i], array[i + 1])
+          await settings.pauseControl()
+          if (settings.stop) return
+        }
+        visual.sideElementFocusOff()
+        await settings.pauseControl()
+        if (settings.stop) return
+      }
+      idx2 = newidx2
+      for(let i = idx2; i > idx1; i--){
+        if(array[i] != higlight) {
+          visual.getElement(higlight)
+          visual.elementFocusOff()
+        }
+        visual.getElement(array[i])
+        await visual.promise(visual.elementFocusOn)
+        await settings.pauseControl()
+        if (settings.stop) return
+        higlight = array[i]
+        visual.getElement(array[i - 1])
+        await visual.promise(visual.sideElementFocusOn)
+        await settings.pauseControl()
+        if (settings.stop) return
+        if(array[i] < array[i - 1]){
+          [array[i],array[i - 1]] = [array[i - 1],array[i]]
+          newidx1 = i
+          await visual.promise(visual.swapElements, array[i], array[i - 1])
+          await settings.pauseControl()
+          if (settings.stop) return
+        }
+        await visual.promise(visual.sideElementFocusOff)
+        await settings.pauseControl()
+        if (settings.stop) return
+      }
+      idx1 = newidx1
+    }
+    visual.getElement(higlight)
     await visual.promise(visual.elementFocusOff)
+    await settings.pauseControl()
+    if (settings.stop) return
   },
   async insert(array: number[], length: number){
     for(let i = 1; i<=length; i++){

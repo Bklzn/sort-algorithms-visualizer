@@ -45,6 +45,7 @@ const settings: {
         let container = document.createElement('div');
         container.classList.add('algorithms');
         container.appendChild(this.setSortBtn('bubble', this.setSort));
+        container.appendChild(this.setSortBtn('cocktail', this.setSort));
         container.appendChild(this.setSortBtn('insert', this.setSort));
         container.appendChild(this.setSortBtn('quick', this.setSort));
         container.appendChild(this.setSortBtn('merge', this.setSort));
@@ -180,6 +181,9 @@ const settings: {
         switch(this.sort){
             case 'bubble':
                 await sort.bubble(visual.values)
+                break;
+            case 'cocktail':
+                await sort.cocktail(visual.values)
                 break;
             case 'insert':
                 await sort.insert(visual.values, visual.length)
