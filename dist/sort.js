@@ -360,5 +360,59 @@ const sort = {
         if (settings.stop)
             return;
     },
+    async selection(array) {
+        for (let i = 0; i < array.length; i++) {
+            let min = i;
+            visual.getElement(array[min]);
+            await visual.promise(visual.elementFocusOn);
+            await settings.pauseControl();
+            if (settings.stop)
+                return;
+            for (let j = i + 1; j < array.length; j++) {
+                visual.getElement(array[j]);
+                await visual.promise(visual.sideElementFocusOn);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                if (array[j] < array[min]) {
+                    visual.getElement(array[min]);
+                    visual.promise(visual.elementFocusOff);
+                    visual.getElement(array[j]);
+                    visual.promise(visual.sideElementFocusOff);
+                    min = j;
+                    visual.getElement(array[min]);
+                    await visual.promise(visual.elementFocusOn);
+                    await settings.pauseControl();
+                    if (settings.stop)
+                        return;
+                }
+                else {
+                    await visual.promise(visual.sideElementFocusOff);
+                    await settings.pauseControl();
+                    if (settings.stop)
+                        return;
+                }
+            }
+            if (array[min] != array[i]) {
+                [array[min], array[i]] = [array[i], array[min]];
+                await visual.promise(visual.swapElements, array[i], array[min]);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                visual.getElement(array[i]);
+                await visual.promise(visual.elementFocusOff);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+            }
+            else {
+                visual.getElement(array[min]);
+                await visual.promise(visual.elementFocusOff);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+            }
+        }
+    }
 };
 export default sort;

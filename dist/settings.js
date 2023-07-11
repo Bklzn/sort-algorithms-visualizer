@@ -23,6 +23,7 @@ const settings = {
         container.appendChild(this.setSortBtn('insert', this.setSort));
         container.appendChild(this.setSortBtn('quick', this.setSort));
         container.appendChild(this.setSortBtn('merge', this.setSort));
+        container.appendChild(this.setSortBtn('selection', this.setSort));
         document.body.appendChild(container);
         container.querySelectorAll('label:nth-child(2)')[0].dispatchEvent(new MouseEvent('click', {
             bubbles: true,
@@ -167,6 +168,9 @@ const settings = {
                 break;
             case 'merge':
                 await sort.mergeSort(visual.values, 0, visual.length - 1);
+                break;
+            case 'selection':
+                await sort.selection(visual.values);
                 break;
         }
         settings.stop = false;
