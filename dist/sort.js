@@ -470,6 +470,51 @@ const sort = {
         for (let i = 1; Math.floor(max / i) > 0; i *= 10) {
             await count(length, i);
         }
-    }
+    },
+    async shell(array) {
+        let length = array.length;
+        for (let gap = Math.floor(length / 2); gap > 0; gap = Math.floor(gap / 2)) {
+            for (let i = gap; i < length; i++) {
+                let temp = array[i];
+                visual.getElement(temp);
+                await visual.promise(visual.elementFocusOn);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                let j;
+                let v = new Array;
+                for (j = i; i >= gap && array[j - gap] > temp; j -= gap) {
+                    v.unshift(array[j - gap]);
+                    visual.getElement(v[0]);
+                    await visual.promise(visual.sideElementFocusOn);
+                    await settings.pauseControl();
+                    if (settings.stop)
+                        return;
+                    array[j] = array[j - gap];
+                    await settings.pauseControl();
+                    if (settings.stop)
+                        return;
+                }
+                array[j] = temp;
+                await visual.promise(visual.updateStyles);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                while (v.length > 0) {
+                    visual.getElement(v[0]);
+                    visual.sideElementFocusOff();
+                    v.shift();
+                }
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+                visual.getElement(temp);
+                await visual.promise(visual.elementFocusOff);
+                await settings.pauseControl();
+                if (settings.stop)
+                    return;
+            }
+        }
+    },
 };
 export default sort;

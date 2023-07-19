@@ -25,6 +25,7 @@ const settings = {
         container.appendChild(this.setSortBtn('merge', this.setSort));
         container.appendChild(this.setSortBtn('selection', this.setSort));
         container.appendChild(this.setSortBtn('radix', this.setSort));
+        container.appendChild(this.setSortBtn('shell', this.setSort));
         document.body.appendChild(container);
         container.querySelectorAll('label:nth-child(2)')[0].dispatchEvent(new MouseEvent('click', {
             bubbles: true,
@@ -176,6 +177,9 @@ const settings = {
                 break;
             case 'radix':
                 await sort.radix(visual.values, visual.length);
+                break;
+            case 'shell':
+                await sort.shell(visual.values);
                 break;
         }
         console.log(visual.values);
