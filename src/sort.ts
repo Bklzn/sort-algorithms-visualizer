@@ -388,6 +388,62 @@ const sort = {
         if (settings.stop) return
       }
     }
+  },
+  async radix(array: number[], length: number){
+    const count = async (n: number, e: number) => {
+      let o = new Array(n)
+      let count = new Array(10).fill(0)
+      for (let i = 0; i < n; i++){
+        let x = Math.floor(array[i] / e) % 10
+        visual.getElement(array[i])
+        await visual.promise(visual.elementFocusOn)
+        await settings.pauseControl()
+        if (settings.stop) return
+
+        count[x]++
+
+        visual.getElement(array[i])
+        await visual.promise(visual.elementFocusOff)
+        await settings.pauseControl()
+        if (settings.stop) return
+      }
+      for (let i = 1; i < 10; i++){
+        count[i] +=count[i - 1]
+      }
+      for (let i = n - 1; i >= 0; i--){
+        let x = Math.floor(array[i] / e) % 10
+        let higlight = count[x]
+        visual.getElement(array[i])
+        await visual.promise(visual.sideElementFocusOn)
+        await settings.pauseControl()
+        if (settings.stop) return
+        visual.getElement(higlight)
+        await visual.promise(visual.sideElementFocusOn)
+        await settings.pauseControl()
+        if (settings.stop) return
+
+        o[count[x] - 1] = array[i]
+        count[x]--
+
+        visual.getElement(higlight)
+        visual.sideElementFocusOff()
+        visual.getElement(array[i])
+        await visual.promise(visual.sideElementFocusOff)
+        await settings.pauseControl()
+        if (settings.stop) return
+      }
+      for (let i = 0; i < n; i++){
+        array[i] = o[i]
+      }
+      await visual.promise(visual.updateStyles)
+      await settings.pauseControl()
+      if (settings.stop) return
+    }
+    let max: number = Math.max(...array)
+    for(let i = 1; Math.floor(max / i) > 0; i*=10){
+      await count(length, i)
+
+    }
   }
 }
 export default sort

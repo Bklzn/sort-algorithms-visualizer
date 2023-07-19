@@ -50,6 +50,7 @@ const settings: {
         container.appendChild(this.setSortBtn('quick', this.setSort));
         container.appendChild(this.setSortBtn('merge', this.setSort));
         container.appendChild(this.setSortBtn('selection', this.setSort));
+        container.appendChild(this.setSortBtn('radix', this.setSort));
 
         document.body.appendChild(container);
         container.querySelectorAll('label:nth-child(2)')[0].dispatchEvent(
@@ -179,6 +180,7 @@ const settings: {
     },
     async startAlgorithm(){
         console.log(this.sort)
+        console.log(visual.values)
         switch(this.sort){
             case 'bubble':
                 await sort.bubble(visual.values)
@@ -198,7 +200,11 @@ const settings: {
             case 'selection':
                 await sort.selection(visual.values)
                 break;
+            case 'radix':
+                await sort.radix(visual.values, visual.length)
+                break;
         }
+        console.log(visual.values)
         settings.stop = false
         settings.start = false
         settings.pause = true
