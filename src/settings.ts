@@ -202,7 +202,7 @@ const settings: {
                 await sort.selection(visual.values)
                 break;
             case 'radix':
-                await sort.radix(visual.values, visual.length)
+                await sort.radix(visual.values)
                 break;
             case 'shell':
                 await sort.shell(visual.values)

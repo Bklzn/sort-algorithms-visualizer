@@ -389,59 +389,67 @@ const sort = {
       }
     }
   },
-  async radix(array: number[], length: number){
-    const count = async (n: number, e: number) => {
-      let o = new Array(n)
-      let count = new Array(10).fill(0)
-      for (let i = 0; i < n; i++){
-        let x = Math.floor(array[i] / e) % 10
+  async radix(array: number[]){
+    // radix and base calculations
+    const RADIX = 4;
+
+    const arrayMax = Math.max(...array);
+    const pmax = Math.ceil(Math.log(arrayMax + 1) / Math.log(RADIX));
+
+    for (let p = 0; p < pmax; ++p) {
+      const base = Math.pow(RADIX, p);
+
+      // count digits and copy data
+      const count = new Array(RADIX).fill(0);
+      const copy = new Array(array.length);
+
+      for (let i = 0; i < array.length; ++i) {
+        const r = Math.floor(array[i] / base) % RADIX;
         visual.getElement(array[i])
         await visual.promise(visual.elementFocusOn)
         await settings.pauseControl()
         if (settings.stop) return
 
-        count[x]++
+        count[r]++;
 
-        visual.getElement(array[i])
         await visual.promise(visual.elementFocusOff)
         await settings.pauseControl()
         if (settings.stop) return
       }
-      for (let i = 1; i < 10; i++){
-        count[i] +=count[i - 1]
+
+      // exclusive prefix sum
+      for (let i = 1; i < count.length; ++i) {
+        count[i] += count[i - 1];
       }
-      for (let i = n - 1; i >= 0; i--){
-        let x = Math.floor(array[i] / e) % 10
-        let higlight = count[x]
-        visual.getElement(array[i])
-        await visual.promise(visual.sideElementFocusOn)
-        await settings.pauseControl()
-        if (settings.stop) return
-        visual.getElement(higlight)
+
+      // redistribute items back into array (stable)
+      for (let i = array.length - 1; i >= 0; --i) {
+        const r = Math.floor(array[i] / base) % RADIX;
+        copy[--count[r]] = array[i];
+      }
+
+      // copy sorted elements back to the original array
+      let v = new Array<number>
+      for (let i = 0; i < array.length; ++i) {
+        v.unshift(copy[i])
+        visual.getElement(copy[i])
         await visual.promise(visual.sideElementFocusOn)
         await settings.pauseControl()
         if (settings.stop) return
 
-        o[count[x] - 1] = array[i]
-        count[x]--
+        array[i] = copy[i];
 
-        visual.getElement(higlight)
-        visual.sideElementFocusOff()
-        visual.getElement(array[i])
-        await visual.promise(visual.sideElementFocusOff)
-        await settings.pauseControl()
-        if (settings.stop) return
-      }
-      for (let i = 0; i < n; i++){
-        array[i] = o[i]
       }
       await visual.promise(visual.updateStyles)
       await settings.pauseControl()
       if (settings.stop) return
-    }
-    let max: number = Math.max(...array)
-    for(let i = 1; Math.floor(max / i) > 0; i*=10){
-      await count(length, i)
+
+      while(v.length > 0){
+        visual.getElement(v.shift() || v[0])
+        visual.sideElementFocusOff()
+      }
+      await settings.pauseControl()
+      if (settings.stop) return
 
     }
   },
