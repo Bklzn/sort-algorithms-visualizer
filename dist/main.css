@@ -42,6 +42,9 @@ body {
 .container .focus, .container .side {
   filter: brightness(1.5);
 }
+.container .focus.side {
+  filter: brightness(1);
+}
 .container .focus {
   border-color: var(--border2);
   background: var(--warning);

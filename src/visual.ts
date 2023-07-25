@@ -1,5 +1,3 @@
-import settings from "./settings.js"
-
 const visual: {
     values: number[],
     length: number,
@@ -22,6 +20,8 @@ const visual: {
     sideElementFocusOn(): void
     sideElementFocusOff(): void
     swapElements(value1: number, value2: number): void
+    updateStyles(): void
+    updateTime(): void
 
 } = {
     values: [],
@@ -117,7 +117,20 @@ const visual: {
         let left2 = element2.style.left
         element1.style.left = left2
         element2.style.left = left1
-    }
+    },
+    async updateStyles(){
+        for(let i = 0; i< visual.length; i++) {
+            visual.setStyleElement(visual.container, visual.values, i)
+        }
+    },
+    async updateTime(){
+        for(let i = 0; i< visual.length; i++) {
+            let element = this.container.querySelector(`.value${this.values[i]}`) as HTMLElement
+            let transition = element.style.transition.split(',')
+            transition[0] = `Left ${this.time}ms ease`
+            element.style.transition = transition[0].concat(',', transition[1])
+        }
+    },
 }
 
 export default visual
