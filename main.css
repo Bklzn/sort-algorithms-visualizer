@@ -42,6 +42,9 @@ body {
 .container .focus, .container .side {
   filter: brightness(1.5);
 }
+.container .focus.side {
+  filter: brightness(1);
+}
 .container .focus {
   border-color: var(--border2);
   background: var(--warning);
@@ -266,8 +269,9 @@ body {
   position: absolute;
   top: 80%;
   left: 0;
-  width: 100%;
+  width: 98%;
   height: 20%;
+  padding: 0 1%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;

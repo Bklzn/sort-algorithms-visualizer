@@ -19,10 +19,13 @@ const settings = {
         let container = document.createElement('div');
         container.classList.add('algorithms');
         container.appendChild(this.setSortBtn('bubble', this.setSort));
+        container.appendChild(this.setSortBtn('cocktail', this.setSort));
         container.appendChild(this.setSortBtn('insert', this.setSort));
         container.appendChild(this.setSortBtn('quick', this.setSort));
-        //soon
-        container.innerHTML += '<p style="color: white; font-weight: 700;">More algorithms soon</p>';
+        container.appendChild(this.setSortBtn('merge', this.setSort));
+        container.appendChild(this.setSortBtn('selection', this.setSort));
+        container.appendChild(this.setSortBtn('radix', this.setSort));
+        container.appendChild(this.setSortBtn('shell', this.setSort));
         document.body.appendChild(container);
         container.querySelectorAll('label:nth-child(2)')[0].dispatchEvent(new MouseEvent('click', {
             bubbles: true,
@@ -125,9 +128,7 @@ const settings = {
         visual.factor = parseInt(range.value);
         visual.setTime();
         settings.updateLabel(range);
-        for (let i = 0; i < visual.length; i++) {
-            visual.setStyleElement(visual.container, visual.values, i);
-        }
+        visual.updateTime();
     },
     async shuffle() {
         if (!settings.start) {
@@ -153,16 +154,30 @@ const settings = {
         checkStop();
     },
     async startAlgorithm() {
-        console.log(this.sort);
         switch (this.sort) {
             case 'bubble':
                 await sort.bubble(visual.values);
+                break;
+            case 'cocktail':
+                await sort.cocktail(visual.values);
                 break;
             case 'insert':
                 await sort.insert(visual.values, visual.length);
                 break;
             case 'quick':
                 await sort.quicksort(visual.values, 0, visual.length - 1);
+                break;
+            case 'merge':
+                await sort.mergeSort(visual.values, 0, visual.length - 1);
+                break;
+            case 'selection':
+                await sort.selection(visual.values);
+                break;
+            case 'radix':
+                await sort.radix(visual.values);
+                break;
+            case 'shell':
+                await sort.shell(visual.values);
                 break;
         }
         settings.stop = false;
