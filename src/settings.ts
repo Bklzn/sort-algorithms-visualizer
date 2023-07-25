@@ -180,8 +180,6 @@ const settings: {
         checkStop()
     },
     async startAlgorithm(){
-        console.log(this.sort)
-        console.log(visual.values)
         switch(this.sort){
             case 'bubble':
                 await sort.bubble(visual.values)
@@ -208,7 +206,6 @@ const settings: {
                 await sort.shell(visual.values)
                 break;
         }
-        console.log(visual.values)
         settings.stop = false
         settings.start = false
         settings.pause = true

@@ -415,13 +415,11 @@ const sort = {
         }
     },
     async radix(array) {
-        // radix and base calculations
         const RADIX = 4;
         const arrayMax = Math.max(...array);
         const pmax = Math.ceil(Math.log(arrayMax + 1) / Math.log(RADIX));
         for (let p = 0; p < pmax; ++p) {
             const base = Math.pow(RADIX, p);
-            // count digits and copy data
             const count = new Array(RADIX).fill(0);
             const copy = new Array(array.length);
             for (let i = 0; i < array.length; ++i) {
@@ -437,16 +435,13 @@ const sort = {
                 if (settings.stop)
                     return;
             }
-            // exclusive prefix sum
             for (let i = 1; i < count.length; ++i) {
                 count[i] += count[i - 1];
             }
-            // redistribute items back into array (stable)
             for (let i = array.length - 1; i >= 0; --i) {
                 const r = Math.floor(array[i] / base) % RADIX;
                 copy[--count[r]] = array[i];
             }
-            // copy sorted elements back to the original array
             let v = new Array;
             for (let i = 0; i < array.length; ++i) {
                 v.unshift(copy[i]);
