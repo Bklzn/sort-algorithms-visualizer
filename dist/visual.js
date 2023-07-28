@@ -55,9 +55,9 @@ const visual = {
         let containerW = elem.offsetWidth;
         let length = values.length;
         let styles = {
-            width: containerW / length / 10 > 1 ? containerW / length - 4 * (containerW / length / 10) : containerW / length - 4,
+            width: Math.max(containerW / length / 10 > 1 ? containerW / length - 4 * (containerW / length / 10) : containerW / length - 4, 0.6),
             height: containerH / length * values[i] - 2 * Math.max(containerW / length / 10, 1),
-            left: containerW / length * i + Math.max(containerW / length / 10, 1),
+            left: containerW / length * i + containerW / length / 10,
             border: containerW / length / 10 < 1.5 ? 0 : containerW / length / 10,
             radius: Math.max(containerW / length / 10, 1) * 2.5,
         };
